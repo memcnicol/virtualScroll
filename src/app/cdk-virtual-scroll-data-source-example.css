@@ -1,0 +1,19 @@
+.example-viewport {
+  height: 200px;
+  width: 100%;
+  border: 1px solid black;
+}
+
+.example-item {
+  height: 50px;
+  border: 1px solid #f0f0f0;
+}
+
+.example-item:nth-child(even) {
+  background-color: #f0f0f0;
+}
+
+.bottom {
+  width: 100%;
+  background-color: #c0c0c0;
+}
