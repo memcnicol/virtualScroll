@@ -23,20 +23,31 @@ export class CdkVirtualScrollDataSourceExample {
 
   constructor(private scrollDispatcher: ScrollDispatcher, private ngZone: NgZone) {}
 
-  ngOnInit(): void {
+  ngAfterViewInit(): void {
+
+    this.updateValues();
 
     this.scrollDispatcher.scrolled().subscribe((event) => {
       console.log('scrolled');
       this.ngZone.run( () => {
-        console.log(this.top = Math.round(this.virtualScroll.measureScrollOffset("top") /50));
-        console.log(this.viewport = this.virtualScroll.getViewportSize() /50);
-        console.log(this.range = this.top + this.viewport);
-
+        this.updateValues();
       });
-
-      this.data = this.virtualScroll.getRenderedRange();
-      this.length = this.virtualScroll.getDataLength();
     });
+  }
+
+  private numberWithCommas(x:number) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+
+  private updateValues() {
+    console.log(this.top = Math.round(this.virtualScroll.measureScrollOffset("top") /50));
+    console.log(this.viewport = this.virtualScroll.getViewportSize() /50);
+    console.log(this.range = this.top + this.viewport);
+
+    this.top = this.numberWithCommas(this.top);
+    this.range = this.numberWithCommas(this.range);
+    this.data = this.virtualScroll.getRenderedRange();
+    this.length = this.numberWithCommas(this.virtualScroll.getDataLength());
   }
 }
 
