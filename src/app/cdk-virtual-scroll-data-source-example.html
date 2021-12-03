@@ -1,9 +1,10 @@
-<div>
+<div class="container">
+  <div class="top">List of Items</div>
   <cdk-virtual-scroll-viewport itemSize="50" class="example-viewport">
     <div *cdkVirtualFor="let item of ds" class="example-item">{{item || 'Loading...'}}</div>
   </cdk-virtual-scroll-viewport>
-  <div class="bottom">Showing {{top || 0}} to {{range || 0}} of {{length || 0}}</div>
-  </div>
+  <div class="bottom">{{top || 0}} to {{range || 0}} of <span style="font-weight: bold;">&nbsp;{{length || 0}}</span></div>
+</div>
   
 
 <!-- Copyright 2021 Google LLC. All Rights Reserved.
