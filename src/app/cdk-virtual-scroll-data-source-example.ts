@@ -8,8 +8,10 @@ import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolli
   selector: 'cdk-virtual-scroll-data-source-example',
   styleUrls: ['cdk-virtual-scroll-data-source-example.css'],
   templateUrl: 'cdk-virtual-scroll-data-source-example.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
 })
+
+
 export class CdkVirtualScrollDataSourceExample {
   ds = new MyDataSource();
 
@@ -39,15 +41,16 @@ export class CdkVirtualScrollDataSourceExample {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
-  private updateValues() {
-    console.log(this.top = Math.round(this.virtualScroll.measureScrollOffset("top") /50));
-    console.log(this.viewport = this.virtualScroll.getViewportSize() /50);
-    console.log(this.range = this.top + this.viewport);
+  updateValues() {
+    this.top = Math.round(this.virtualScroll.measureScrollOffset("top") /50);
+    this.viewport = this.virtualScroll.getViewportSize() /50;
+    this.range = this.top + this.viewport;
 
     this.top = this.numberWithCommas(this.top);
     this.range = this.numberWithCommas(this.range);
     this.data = this.virtualScroll.getRenderedRange();
     this.length = this.numberWithCommas(this.virtualScroll.getDataLength());
+
   }
 }
 
