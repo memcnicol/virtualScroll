@@ -1,5 +1,5 @@
 import {CollectionViewer, DataSource, ListRange} from '@angular/cdk/collections';
-import {ChangeDetectionStrategy, Component, NgZone, ViewChild} from '@angular/core';
+import {ChangeDetectionStrategy, Component, HostListener, NgZone, ViewChild} from '@angular/core';
 import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 import { CdkVirtualScrollViewport, ScrollDispatcher } from '@angular/cdk/scrolling';
 
@@ -37,14 +37,20 @@ export class CdkVirtualScrollDataSourceExample {
     });
   }
 
+  @HostListener('window:resize') onResize() {
+    // guard against resize before view is rendered
+    console.log("window resized");
+    this.updateValues();
+  }
+
   private numberWithCommas(x:number) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
   }
 
   updateValues() {
-    this.top = Math.round(this.virtualScroll.measureScrollOffset("top") /50);
-    this.viewport = this.virtualScroll.getViewportSize() /50;
-    this.range = this.top + this.viewport;
+    this.top = Math.round(this.virtualScroll.measureScrollOffset("top") /50) + 1;
+    this.viewport = Math.floor(this.virtualScroll.getViewportSize() /50);
+    this.range = this.top + this.viewport - 1;
 
     this.top = this.numberWithCommas(this.top);
     this.range = this.numberWithCommas(this.range);
@@ -94,7 +100,7 @@ export class MyDataSource extends DataSource<string | undefined> {
       this._cachedData.splice(
         page * this._pageSize,
         this._pageSize,
-        ...Array.from({length: this._pageSize}).map((_, i) => `Item #${page * this._pageSize + i}`),
+        ...Array.from({length: this._pageSize}).map((_, i) => `Item #${page * this._pageSize + i + 1}`),
       );
       this._dataStream.next(this._cachedData);
     }, Math.random() * 1000 + 200);
